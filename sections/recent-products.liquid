@@ -1,0 +1,157 @@
+{{ 'section-collection-list.css' | asset_url | stylesheet_tag }}
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+<style>
+  .card__media {
+    background: transparent !important;
+  }
+
+  .modern-product-card {
+    background: transparent;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    overflow: hidden;
+    padding: 1rem;
+    min-width: 280px;
+  }
+
+  .modern-product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .modern-product-info {
+    padding: 1.5rem;
+  }
+
+  .modern-product-title {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+
+  .modern-product-price {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #2c2c2c;
+  }
+
+  .products-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    padding-bottom: 1rem;
+  }
+
+  .products-scroll::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .products-scroll::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+  }
+
+  .products-scroll::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+  }
+
+  .products-scroll .grid {
+    flex-wrap: nowrap;
+    margin-bottom: 0;
+  }
+</style>
+
+<div style="background-color: {{ section.settings.background_color }}; padding: 4rem 0;">
+  <div class="page-width">
+    <div class="title-wrapper-with-link title-wrapper--self-padded-mobile">
+      <h2 class="title inline-richtext" style="color: #ffffff; font-size: 4rem;">
+        {{ section.settings.title | escape }}
+      </h2>
+    </div>
+
+    <div class="products-scroll">
+      <ul class="grid product-grid" style="gap: 2rem;">
+        {%- for product in collections.all.products limit: 10 -%}
+          <li class="grid__item">
+            <div class="modern-product-card">
+              {% render 'card-product-new',
+                card_product: product,
+                media_aspect_ratio: section.settings.image_ratio,
+                show_secondary_image: section.settings.show_secondary_image,
+                show_vendor: section.settings.show_vendor,
+                show_rating: section.settings.show_rating
+              %}
+            </div>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Recent Products",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "default": "Recent Products",
+      "label": "Heading"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#f4f4f4"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "Adapt to image"
+        },
+        {
+          "value": "portrait",
+          "label": "Portrait"
+        },
+        {
+          "value": "square",
+          "label": "Square"
+        }
+      ],
+      "default": "adapt",
+      "label": "Image ratio"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_secondary_image",
+      "default": false,
+      "label": "Show second image on hover"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "default": false,
+      "label": "Show product vendor"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "default": false,
+      "label": "Show product rating"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Recent Products"
+    }
+  ]
+}
+{% endschema %}

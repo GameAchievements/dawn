@@ -1,0 +1,264 @@
+{%- style -%}
+  .hero-section {
+    display: flex;
+    padding: 4rem 3rem;
+    gap: 4rem;
+    align-items: center;
+    margin: 0 auto;
+    background-color: {{ section.settings.background_color }};
+    width: 100%;
+  }
+
+  .hero-section-inner {
+    max-width: var(--page-width);
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .hero-logo-section {
+    flex: 1;
+    text-align: center;
+    color: #ffffff;
+  }
+
+  .hero-logo-wrapper {
+    max-width: 600px; /* Increased from 400px */
+    margin: 0 auto 2rem;
+    transform: scale(1.2); /* Added scale transform */
+    transition: transform 0.3s ease;
+  }
+
+  .hero-logo-wrapper img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .hero-description {
+    font-size: 1.5rem;
+    line-height: 1.5;
+    color: #ffffff;
+  }
+
+  .hero-promo-section {
+    flex: 0.6;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  }
+
+  .hero-promo-section h2 {
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .promo-image-container {
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto 2rem;
+  }
+
+  .promo-image-container::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 120%;
+    height: 120%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(
+      circle at center,
+      rgba(255, 255, 255, 0.8) 0%,
+      rgba(255, 255, 255, 0.4) 25%,
+      rgba(255, 255, 255, 0) 70%
+    );
+    animation: flare 3s ease-in-out infinite;
+    z-index: 0;
+  }
+
+  @keyframes flare {
+    0% {
+      transform: translate(-50%, -50%) scale(0.8);
+      opacity: 0.5;
+    }
+    50% {
+      transform: translate(-50%, -50%) scale(1.1);
+      opacity: 0.8;
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(0.8);
+      opacity: 0.5;
+    }
+  }
+
+  .promo-product-image {
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    border-radius: 12px;
+    display: block;
+    transition: transform 0.3s ease;
+    z-index: 1;
+  }
+
+  .promo-product-image:hover {
+    transform: scale(1.02);
+  }
+
+  .promo-product-title {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-weight: 700;
+    background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .promo-product-title a {
+    text-decoration: none;
+  }
+
+  .stock-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin-top: 2rem;
+    font-size: 1.3rem;
+    background: rgba(0, 0, 0, 0.05);
+    padding: 1.2rem;
+    border-radius: 12px;
+    color: #ffffff;
+  }
+
+  .stock-info span {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .sweepstake-button {
+    display: block;
+    width: 100%;
+    margin-top: 2rem;
+    padding: 1rem;
+    background: linear-gradient(45deg, rgba(var(--color-button), 1), rgba(var(--color-button), 0.8));
+    color: rgba(var(--color-button-text), 1);
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .sweepstake-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    opacity: 0.95;
+  }
+
+  @media screen and (max-width: 990px) {
+    .hero-section {
+      padding: 2rem 1rem;
+    }
+
+    .hero-section-inner {
+      flex-direction: column;
+      gap: 3rem;
+    }
+
+    .hero-promo-section {
+      padding: 1.5rem;
+    }
+  }
+{%- endstyle -%}
+
+{% schema %}
+{
+  "name": "Hero Section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "description",
+      "label": "Description Text",
+      "default": "Welcome to our store"
+    },
+    {
+      "type": "product",
+      "id": "featured_product",
+      "label": "Featured Product"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "number",
+      "id": "total_entries",
+      "label": "Total Available Entries",
+      "default": 100
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Section"
+    }
+  ]
+}
+{% endschema %}
+
+<div class="hero-section">
+  <div class="hero-section-inner">
+    <div class="hero-logo-section">
+      <div class="hero-logo-wrapper">
+        {%- if settings.logo != blank -%}
+          {{
+            settings.logo
+            | image_url: width: 600
+            | image_tag: loading: 'eager', width: 600, height: 600, alt: shop.name
+          }}
+        {%- else -%}
+          <h1>{{ shop.name }}</h1>
+        {%- endif -%}
+      </div>
+      <p class="hero-description">{{ section.settings.description }}</p>
+    </div>
+
+    {%- if section.settings.featured_product != blank -%}
+      {%- assign product = all_products[section.settings.featured_product] -%}
+      {%- assign tickets_sold = section.settings.total_entries | minus: product.available -%}
+      <div class="hero-promo-section">
+        <h2>Featured Sweepstake</h2>
+        <div class="promo-image-container">
+          {{
+            product.featured_image
+            | image_url: width: 400
+            | image_tag: class: 'promo-product-image', loading: 'eager', alt: product.title
+          }}
+        </div>
+        <h2 class="promo-product-title">
+          <a href="{{ product.url }}">Win {{ product.title }}</a>
+        </h2>
+        <div class="stock-info">
+          <span>🎟️ Tickets Sold: {{ tickets_sold }}/{{ section.settings.total_entries }}</span>
+          <span>💰 Price per Entry: {{ product.price | money }}</span>
+          <span>⚠️ Maximum 5 entries per person</span>
+        </div>
+        <a href="{{ product.url }}" class="sweepstake-button">Enter to Win Now</a>
+      </div>
+    {%- endif -%}
+  </div>
+</div>

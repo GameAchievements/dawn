@@ -1,0 +1,122 @@
+{% comment %}
+  Renders a modern product card specifically for low stock products
+  Shows inventory level and urgency indicators
+
+  Accepts:
+  - card_product: {Object} Product Liquid object (required)
+  - show_vendor: {Boolean} Show the products vendor (optional)
+{% endcomment %}
+
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+
+<style>
+  .modern-card {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+    padding: 1.5rem;
+    transition: transform 0.3s ease;
+    position: relative;
+  }
+
+  .modern-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .modern-card__image {
+    position: relative;
+    margin-bottom: 1rem;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .modern-card__image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    background: transparent;
+  }
+
+  .modern-card__title {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: #ffffff;
+  }
+
+  .modern-card__price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .modern-card__price {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #ffffff;
+  }
+
+  .modern-card__price .price {
+    color: #ffffff !important;
+  }
+
+  .modern-card__stock-count {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #ff3333;
+  }
+
+  .modern-card__button {
+    width: 100%;
+    padding: 0.8rem;
+    border-radius: 8px;
+    border: none;
+    background: #4a90e2;
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  .modern-card__button:hover {
+    background: #357abd;
+  }
+</style>
+
+<div class="modern-card">
+  <div class="modern-card__image">
+    {% if card_product.featured_media %}
+      <a href="{{ card_product.url }}">
+        <img
+          src="{{ card_product.featured_media | image_url: width: 533 }}"
+          alt="{{ card_product.featured_media.alt | escape }}"
+          loading="lazy"
+          width="{{ card_product.featured_media.width }}"
+          height="{{ card_product.featured_media.height }}"
+        >
+      </a>
+    {% endif %}
+  </div>
+
+  <h2 class="modern-card__title">
+    <a href="{{ card_product.url }}" class="full-unstyled-link">
+      {{ card_product.title | escape }}
+    </a>
+  </h2>
+
+  <div class="modern-card__price-row">
+    <div class="modern-card__price">
+      {% render 'price', product: card_product, show_compare_at_price: true %}
+    </div>
+    <span class="modern-card__stock-count">Only {{ card_product.variants.first.inventory_quantity }} left!</span>
+  </div>
+
+  <button
+    type="button"
+    class="modern-card__button"
+    onclick="window.location.href='{{ card_product.url }}'"
+  >
+    Shop Now
+  </button>
+</div>
